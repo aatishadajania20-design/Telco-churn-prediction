@@ -4,3 +4,4 @@ pandas
 numpy
 joblib
 plotly>=5.22.0
+shap

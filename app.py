@@ -1,5 +1,5 @@
 """
-ChurnIQ — AI Churn Intelligence Platform
+ChurnIQ â€” AI Churn Intelligence Platform
 Premium Streamlit redesign with Plotly visualisations.
 """
 import warnings
@@ -16,35 +16,35 @@ from sklearn.metrics import (
     confusion_matrix, roc_curve, auc,
 )
 
-# ─────────────────────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # Page config
-# ─────────────────────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 st.set_page_config(
-    page_title="ChurnIQ — AI Analytics",
-    page_icon="🧠",
+    page_title="ChurnIQ â€” AI Analytics",
+    page_icon="ðŸ§ ",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
-# ─────────────────────────────────────────────────────────────────────────────
-# CSS — dark premium theme
-# ─────────────────────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# CSS â€” dark premium theme
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 st.markdown("""
 <style>
-/* ── Global ─────────────────────────────────────────────── */
+/* â”€â”€ Global â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 html, body, [class*="css"] { font-family: 'Inter', sans-serif !important; }
 .stApp { background-color: #030712 !important; }
 #MainMenu, footer, header { visibility: hidden; }
 
-/* ── Sidebar ─────────────────────────────────────────────── */
+/* â”€â”€ Sidebar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 [data-testid="stSidebar"] {
     background: linear-gradient(180deg, #0a0f1e 0%, #0f172a 100%) !important;
     border-right: 1px solid rgba(255,255,255,0.06) !important;
 }
 [data-testid="stSidebar"] * { color: #cbd5e1 !important; }
 
-/* ── Tabs ────────────────────────────────────────────────── */
+/* â”€â”€ Tabs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .stTabs [data-baseweb="tab-list"] {
     background: rgba(15,23,42,0.8) !important;
     border-radius: 14px !important;
@@ -69,7 +69,7 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif !important; }
 .stTabs [data-baseweb="tab-highlight"] { display: none !important; }
 .stTabs [data-baseweb="tab-border"] { display: none !important; }
 
-/* ── Metric cards ────────────────────────────────────────── */
+/* â”€â”€ Metric cards â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 [data-testid="metric-container"] {
     background: linear-gradient(135deg, rgba(15,23,42,0.9), rgba(30,41,59,0.7)) !important;
     border: 1px solid rgba(255,255,255,0.08) !important;
@@ -96,7 +96,7 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif !important; }
     font-weight: 500 !important;
 }
 
-/* ── Buttons ─────────────────────────────────────────────── */
+/* â”€â”€ Buttons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .stButton > button {
     background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
     color: white !important;
@@ -114,7 +114,7 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif !important; }
     box-shadow: 0 8px 30px rgba(99,102,241,0.5) !important;
 }
 
-/* ── Selects / inputs ────────────────────────────────────── */
+/* â”€â”€ Selects / inputs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .stSelectbox > div > div,
 .stNumberInput > div > div > input,
 .stSlider > div { color: #e2e8f0 !important; }
@@ -129,12 +129,12 @@ div[data-baseweb="select"] > div {
     border-radius: 10px !important;
 }
 
-/* ── Slider ──────────────────────────────────────────────── */
+/* â”€â”€ Slider â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 [data-testid="stSlider"] > div > div > div > div {
     background: #6366f1 !important;
 }
 
-/* ── Success / Error alerts ──────────────────────────────── */
+/* â”€â”€ Success / Error alerts â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .stSuccess {
     background: rgba(16,185,129,0.12) !important;
     border: 1px solid rgba(16,185,129,0.3) !important;
@@ -148,23 +148,23 @@ div[data-baseweb="select"] > div {
     color: #fda4af !important;
 }
 
-/* ── Expander ────────────────────────────────────────────── */
+/* â”€â”€ Expander â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 [data-testid="stExpander"] {
     background: rgba(15,23,42,0.6) !important;
     border: 1px solid rgba(255,255,255,0.06) !important;
     border-radius: 12px !important;
 }
 
-/* ── Divider ─────────────────────────────────────────────── */
+/* â”€â”€ Divider â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 hr { border-color: rgba(255,255,255,0.06) !important; }
 
-/* ── Scrollbar ───────────────────────────────────────────── */
+/* â”€â”€ Scrollbar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: #0f172a; }
 ::-webkit-scrollbar-thumb { background: #334155; border-radius: 99px; }
 ::-webkit-scrollbar-thumb:hover { background: #6366f1; }
 
-/* ── Section labels ──────────────────────────────────────── */
+/* â”€â”€ Section labels â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .section-label {
     font-size: 10px;
     font-weight: 700;
@@ -174,7 +174,7 @@ hr { border-color: rgba(255,255,255,0.06) !important; }
     margin-bottom: 12px;
 }
 
-/* ── Info card ───────────────────────────────────────────── */
+/* â”€â”€ Info card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .info-card {
     background: rgba(99,102,241,0.08);
     border: 1px solid rgba(99,102,241,0.2);
@@ -189,9 +189,9 @@ hr { border-color: rgba(255,255,255,0.06) !important; }
 </style>
 """, unsafe_allow_html=True)
 
-# ─────────────────────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # Plotly chart defaults
-# ─────────────────────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 CHART_DEFAULTS = dict(
     paper_bgcolor="rgba(0,0,0,0)",
     plot_bgcolor="rgba(0,0,0,0)",
@@ -210,9 +210,9 @@ def apply_defaults(fig: go.Figure, title: str = "", height: int = 320) -> go.Fig
     )
     return fig
 
-# ─────────────────────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # Load model & data (cached)
-# ─────────────────────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 @st.cache_resource
 def load_model():
     return joblib.load("model.pkl"), joblib.load("columns.pkl")
@@ -241,16 +241,16 @@ except Exception as e:
     st.error(f"Error loading model artefacts: {e}")
     st.stop()
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Sidebar — branding + quick stats
-# ─────────────────────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# Sidebar â€” branding + quick stats
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 with st.sidebar:
     st.markdown("""
     <div style='text-align:center; padding: 24px 0 16px 0;'>
         <div style='display:inline-flex; align-items:center; justify-content:center;
                     width:52px; height:52px; background:linear-gradient(135deg,#6366f1,#8b5cf6);
                     border-radius:14px; font-size:26px; margin-bottom:12px; box-shadow:0 4px 20px rgba(99,102,241,0.4);'>
-            🧠
+            ðŸ§ 
         </div>
         <h2 style='margin:0; color:#f1f5f9; font-size:22px; font-weight:800; letter-spacing:-0.5px;'>ChurnIQ</h2>
         <p style='margin:4px 0 0 0; color:#6366f1; font-size:10px; font-weight:700;
@@ -287,13 +287,13 @@ with st.sidebar:
                         animation:pulse 2s infinite;'></div>
             <span style='color:#818cf8; font-size:11px; font-weight:600;'>Model Active</span>
         </div>
-        <p style='margin:4px 0 0 0; color:#475569; font-size:10px;'>Random Forest · scikit-learn</p>
+        <p style='margin:4px 0 0 0; color:#475569; font-size:10px;'>Random Forest Â· scikit-learn</p>
     </div>
     """, unsafe_allow_html=True)
 
-# ─────────────────────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # Hero header
-# ─────────────────────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 st.markdown("""
 <div style='background:linear-gradient(135deg, rgba(99,102,241,0.08), rgba(139,92,246,0.05));
             border:1px solid rgba(99,102,241,0.15); border-radius:20px; padding:28px 32px; margin-bottom:8px;
@@ -306,23 +306,23 @@ st.markdown("""
                 Telco Customer Churn Intelligence
             </h1>
             <p style='margin:6px 0 0 0; color:#64748b; font-size:13px;'>
-                AI-powered analytics platform — predict churn risk, explore patterns, and protect revenue
+                AI-powered analytics platform â€” predict churn risk, explore patterns, and protect revenue
             </p>
         </div>
     </div>
 </div>
 """, unsafe_allow_html=True)
 
-# ─────────────────────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # Tabs
-# ─────────────────────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 tab_dash, tab_predict, tab_analytics, tab_model = st.tabs([
-    "📊  Dashboard", "🧠  AI Predictor", "🔍  Analytics", "⚙️  Model Intel"
+    "ðŸ“Š  Dashboard", "ðŸ§   AI Predictor", "ðŸ”  Analytics", "âš™ï¸  Model Intel"
 ])
 
-# ══════════════════════════════════════════════════════════════════════════════
-# TAB 1 — DASHBOARD
-# ══════════════════════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+# TAB 1 â€” DASHBOARD
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 with tab_dash:
     # KPI row
     k1, k2, k3, k4 = st.columns(4)
@@ -338,7 +338,7 @@ with tab_dash:
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # Row 1 — Contract + Tenure charts
+    # Row 1 â€” Contract + Tenure charts
     col1, col2 = st.columns(2)
 
     with col1:
@@ -395,7 +395,7 @@ with tab_dash:
         )
         st.plotly_chart(fig2, use_container_width=True, config={"displayModeBar": False})
 
-    # Row 2 — Feature importance + Segments
+    # Row 2 â€” Feature importance + Segments
     col3, col4 = st.columns(2)
 
     with col3:
@@ -459,12 +459,12 @@ with tab_dash:
     st.markdown("""
     <div class='info-card'>
         <div style='display:flex; gap:10px; align-items:flex-start;'>
-            <span style='font-size:18px;'>💡</span>
+            <span style='font-size:18px;'>ðŸ’¡</span>
             <div>
                 <p style='margin:0 0 4px 0; color:#818cf8; font-weight:600; font-size:13px;'>Key Insight</p>
                 <p style='margin:0; color:#94a3b8; font-size:13px; line-height:1.6;'>
                     Month-to-month contract customers churn at <strong style='color:#f43f5e;'>42.7%</strong>
-                    — over 15× higher than two-year contract holders (2.8%).
+                    â€” over 15Ã— higher than two-year contract holders (2.8%).
                     Fiber optic internet users show <strong style='color:#f59e0b;'>41.9% churn</strong>,
                     suggesting a service satisfaction issue.
                     Proactive contract upgrades could protect
@@ -475,16 +475,16 @@ with tab_dash:
     </div>
     """, unsafe_allow_html=True)
 
-# ══════════════════════════════════════════════════════════════════════════════
-# TAB 2 — AI PREDICTOR
-# ══════════════════════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+# TAB 2 â€” AI PREDICTOR
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 with tab_predict:
     form_col, result_col = st.columns([1, 1], gap="large")
 
     with form_col:
         st.markdown("<p class='section-label'>Customer Profile</p>", unsafe_allow_html=True)
 
-        with st.expander("👤  Demographics", expanded=True):
+        with st.expander("ðŸ‘¤  Demographics", expanded=True):
             c1, c2 = st.columns(2)
             with c1:
                 gender = st.selectbox("Gender", ["Male", "Female"])
@@ -493,7 +493,7 @@ with tab_predict:
                 Partner = st.selectbox("Partner", ["No", "Yes"])
                 Dependents = st.selectbox("Dependents", ["No", "Yes"])
 
-        with st.expander("📋  Account & Billing", expanded=True):
+        with st.expander("ðŸ“‹  Account & Billing", expanded=True):
             tenure = st.slider("Tenure (months)", 0, 72, 12)
             c3, c4 = st.columns(2)
             with c3:
@@ -510,7 +510,7 @@ with tab_predict:
                     ["Electronic check", "Mailed check",
                      "Bank transfer (automatic)", "Credit card (automatic)"])
 
-        with st.expander("📡  Services", expanded=True):
+        with st.expander("ðŸ“¡  Services", expanded=True):
             c7, c8 = st.columns(2)
             with c7:
                 PhoneService = st.selectbox("Phone Service", ["No", "Yes"])
@@ -524,9 +524,9 @@ with tab_predict:
                 StreamingTV = st.selectbox("Streaming TV", ["No internet service", "No", "Yes"])
                 StreamingMovies = st.selectbox("Streaming Movies", ["No internet service", "No", "Yes"])
 
-        predict_btn = st.button("🧠  Run AI Prediction", use_container_width=True)
+        predict_btn = st.button("ðŸ§   Run AI Prediction", use_container_width=True)
 
-    # ── Result panel ──────────────────────────────────────────────────────────
+    # â”€â”€ Result panel â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     with result_col:
         st.markdown("<p class='section-label'>Prediction Result</p>", unsafe_allow_html=True)
 
@@ -552,13 +552,13 @@ with tab_predict:
 
             # Risk level
             if churn_prob >= 75:
-                risk, risk_class, risk_icon = "Critical", "risk-critical", "🔴"
+                risk, risk_class, risk_icon = "Critical", "risk-critical", "ðŸ”´"
             elif churn_prob >= 50:
-                risk, risk_class, risk_icon = "High", "risk-high", "🟠"
+                risk, risk_class, risk_icon = "High", "risk-high", "ðŸŸ "
             elif churn_prob >= 25:
-                risk, risk_class, risk_icon = "Medium", "risk-medium", "🟡"
+                risk, risk_class, risk_icon = "Medium", "risk-medium", "ðŸŸ¡"
             else:
-                risk, risk_class, risk_icon = "Low", "risk-low", "🟢"
+                risk, risk_class, risk_icon = "Low", "risk-low", "ðŸŸ¢"
 
             avg_remaining = max(0, 24 - tenure)
             revenue_at_risk = MonthlyCharges * avg_remaining * (churn_prob / 100)
@@ -567,23 +567,23 @@ with tab_predict:
             if pred == 1:
                 verdict_html = f"""
                 <div class='{risk_class}' style='text-align:center; margin-bottom:16px;'>
-                    <p style='font-size:32px; margin:0;'>⚠️</p>
+                    <p style='font-size:32px; margin:0;'>âš ï¸</p>
                     <p style='font-size:18px; font-weight:700; color:#fda4af; margin:4px 0;'>
                         Likely to Churn
                     </p>
                     <p style='color:#f87171; font-size:13px; margin:0;'>
-                        {risk} Risk · {churn_prob:.1f}% probability
+                        {risk} Risk Â· {churn_prob:.1f}% probability
                     </p>
                 </div>"""
             else:
                 verdict_html = f"""
                 <div class='{risk_class}' style='text-align:center; margin-bottom:16px;'>
-                    <p style='font-size:32px; margin:0;'>✅</p>
+                    <p style='font-size:32px; margin:0;'>âœ…</p>
                     <p style='font-size:18px; font-weight:700; color:#6ee7b7; margin:4px 0;'>
                         Likely to Stay
                     </p>
                     <p style='color:#34d399; font-size:13px; margin:0;'>
-                        {risk} Risk · {churn_prob:.1f}% churn probability
+                        {risk} Risk Â· {churn_prob:.1f}% churn probability
                     </p>
                 </div>"""
             st.markdown(verdict_html, unsafe_allow_html=True)
@@ -652,7 +652,7 @@ with tab_predict:
             <div style='background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.25);
                         border-radius:10px; padding:14px; display:flex; justify-content:space-between;
                         align-items:center; margin-bottom:12px;'>
-                <span style='color:#94a3b8; font-size:13px;'>💰 Revenue at Risk</span>
+                <span style='color:#94a3b8; font-size:13px;'>ðŸ’° Revenue at Risk</span>
                 <span style='color:#fbbf24; font-size:16px; font-weight:700;'>
                     ${revenue_at_risk:,.0f}
                 </span>
@@ -669,12 +669,12 @@ with tab_predict:
             elif churn_prob >= 40:
                 rec = "Schedule proactive check-in and review service satisfaction score."
             else:
-                rec = "Customer appears stable — maintain quarterly engagement touchpoints."
+                rec = "Customer appears stable â€” maintain quarterly engagement touchpoints."
 
             st.markdown(f"""
             <div class='info-card'>
                 <p style='margin:0 0 4px 0; color:#818cf8; font-weight:600; font-size:12px;
-                          text-transform:uppercase; letter-spacing:1px;'>💡 AI Recommendation</p>
+                          text-transform:uppercase; letter-spacing:1px;'>ðŸ’¡ AI Recommendation</p>
                 <p style='margin:0; color:#94a3b8; font-size:13px; line-height:1.6;'>{rec}</p>
             </div>""", unsafe_allow_html=True)
 
@@ -683,7 +683,7 @@ with tab_predict:
             <div style='display:flex; flex-direction:column; align-items:center; justify-content:center;
                         height:420px; background:rgba(15,23,42,0.5); border:1px solid rgba(255,255,255,0.06);
                         border-radius:16px; text-align:center; padding:32px;'>
-                <div style='font-size:52px; margin-bottom:16px;'>🧠</div>
+                <div style='font-size:52px; margin-bottom:16px;'>ðŸ§ </div>
                 <h3 style='color:#f1f5f9; margin:0 0 8px 0; font-size:18px;'>Ready to Analyse</h3>
                 <p style='color:#475569; font-size:13px; line-height:1.6; max-width:280px;'>
                     Configure the customer profile on the left, then click
@@ -692,9 +692,9 @@ with tab_predict:
                 </p>
             </div>""", unsafe_allow_html=True)
 
-# ══════════════════════════════════════════════════════════════════════════════
-# TAB 3 — ANALYTICS
-# ══════════════════════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+# TAB 3 â€” ANALYTICS
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 with tab_analytics:
     sub1, sub2, sub3 = st.tabs(["Payment & Service", "Charge Distribution", "Segment Overview"])
 
@@ -805,7 +805,7 @@ with tab_analytics:
                         {row["Count"]:,}
                     </p>
                     <p style='margin:0; color:#475569; font-size:11px;'>
-                        ${row["Avg Monthly ($)"]}/mo · {row["Avg Tenure (mo)"]}mo
+                        ${row["Avg Monthly ($)"]}/mo Â· {row["Avg Tenure (mo)"]}mo
                     </p>
                     <p style='margin:4px 0 0 0; font-size:12px; font-weight:600;
                               color:{"#f43f5e" if float(row["Churn Rate"].rstrip("%")) > 40 else "#f59e0b" if float(row["Churn Rate"].rstrip("%")) > 20 else "#10b981"};'>
@@ -813,9 +813,9 @@ with tab_analytics:
                     </p>
                 </div>""", unsafe_allow_html=True)
 
-# ══════════════════════════════════════════════════════════════════════════════
-# TAB 4 — MODEL INTEL
-# ══════════════════════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+# TAB 4 â€” MODEL INTEL
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 with tab_model:
     report = classification_report(y_true, y_pred_all, output_dict=True)
     cm = confusion_matrix(y_true, y_pred_all)
@@ -910,7 +910,7 @@ with tab_model:
     st.plotly_chart(fig_fi, use_container_width=True, config={"displayModeBar": False})
 
     # Architecture info
-    with st.expander("⚙️  Model Architecture Details"):
+    with st.expander("âš™ï¸  Model Architecture Details"):
         arch_data = {
             "Algorithm": "Random Forest Classifier",
             "Framework": "scikit-learn",
