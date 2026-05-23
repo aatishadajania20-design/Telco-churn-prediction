@@ -13,10 +13,6 @@ env/
 .ipynb_checkpoints/
 *.ipynb
 
-# Large model / data files
-*.pkl
-*.csv
-
 # Node / Next.js
 frontend/node_modules/
 frontend/.next/
