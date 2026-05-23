@@ -1,6 +1,7 @@
+# -*- coding: utf-8 -*-
 """
-ChurnIQ â€” AI Churn Intelligence Platform
-Premium Streamlit redesign with Plotly visualisations.
+ChurnIQ - AI Churn Intelligence Platform
+Premium Streamlit dashboard with Plotly visualisations.
 """
 import warnings
 warnings.filterwarnings("ignore")
@@ -10,41 +11,37 @@ import pandas as pd
 import numpy as np
 import joblib
 import plotly.graph_objects as go
-import plotly.express as px
 from sklearn.metrics import (
     accuracy_score, classification_report,
     confusion_matrix, roc_curve, auc,
 )
 
-# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ---------------------------------------------------------------------------
 # Page config
-# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ---------------------------------------------------------------------------
 st.set_page_config(
-    page_title="ChurnIQ â€” AI Analytics",
-    page_icon="ðŸ§ ",
+    page_title="ChurnIQ - AI Analytics",
+    page_icon="\U0001f9e0",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
-# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-# CSS â€” dark premium theme
-# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ---------------------------------------------------------------------------
+# CSS - dark premium theme
+# ---------------------------------------------------------------------------
 st.markdown("""
 <style>
-/* â”€â”€ Global â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 html, body, [class*="css"] { font-family: 'Inter', sans-serif !important; }
 .stApp { background-color: #030712 !important; }
 #MainMenu, footer, header { visibility: hidden; }
 
-/* â”€â”€ Sidebar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 [data-testid="stSidebar"] {
     background: linear-gradient(180deg, #0a0f1e 0%, #0f172a 100%) !important;
     border-right: 1px solid rgba(255,255,255,0.06) !important;
 }
 [data-testid="stSidebar"] * { color: #cbd5e1 !important; }
 
-/* â”€â”€ Tabs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .stTabs [data-baseweb="tab-list"] {
     background: rgba(15,23,42,0.8) !important;
     border-radius: 14px !important;
@@ -69,7 +66,6 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif !important; }
 .stTabs [data-baseweb="tab-highlight"] { display: none !important; }
 .stTabs [data-baseweb="tab-border"] { display: none !important; }
 
-/* â”€â”€ Metric cards â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 [data-testid="metric-container"] {
     background: linear-gradient(135deg, rgba(15,23,42,0.9), rgba(30,41,59,0.7)) !important;
     border: 1px solid rgba(255,255,255,0.08) !important;
@@ -96,7 +92,6 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif !important; }
     font-weight: 500 !important;
 }
 
-/* â”€â”€ Buttons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .stButton > button {
     background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
     color: white !important;
@@ -114,7 +109,6 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif !important; }
     box-shadow: 0 8px 30px rgba(99,102,241,0.5) !important;
 }
 
-/* â”€â”€ Selects / inputs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .stSelectbox > div > div,
 .stNumberInput > div > div > input,
 .stSlider > div { color: #e2e8f0 !important; }
@@ -129,12 +123,8 @@ div[data-baseweb="select"] > div {
     border-radius: 10px !important;
 }
 
-/* â”€â”€ Slider â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-[data-testid="stSlider"] > div > div > div > div {
-    background: #6366f1 !important;
-}
+[data-testid="stSlider"] > div > div > div > div { background: #6366f1 !important; }
 
-/* â”€â”€ Success / Error alerts â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .stSuccess {
     background: rgba(16,185,129,0.12) !important;
     border: 1px solid rgba(16,185,129,0.3) !important;
@@ -148,23 +138,19 @@ div[data-baseweb="select"] > div {
     color: #fda4af !important;
 }
 
-/* â”€â”€ Expander â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 [data-testid="stExpander"] {
     background: rgba(15,23,42,0.6) !important;
     border: 1px solid rgba(255,255,255,0.06) !important;
     border-radius: 12px !important;
 }
 
-/* â”€â”€ Divider â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 hr { border-color: rgba(255,255,255,0.06) !important; }
 
-/* â”€â”€ Scrollbar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: #0f172a; }
 ::-webkit-scrollbar-thumb { background: #334155; border-radius: 99px; }
 ::-webkit-scrollbar-thumb:hover { background: #6366f1; }
 
-/* â”€â”€ Section labels â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .section-label {
     font-size: 10px;
     font-weight: 700;
@@ -174,7 +160,6 @@ hr { border-color: rgba(255,255,255,0.06) !important; }
     margin-bottom: 12px;
 }
 
-/* â”€â”€ Info card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .info-card {
     background: rgba(99,102,241,0.08);
     border: 1px solid rgba(99,102,241,0.2);
@@ -189,9 +174,9 @@ hr { border-color: rgba(255,255,255,0.06) !important; }
 </style>
 """, unsafe_allow_html=True)
 
-# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ---------------------------------------------------------------------------
 # Plotly chart defaults
-# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ---------------------------------------------------------------------------
 CHART_DEFAULTS = dict(
     paper_bgcolor="rgba(0,0,0,0)",
     plot_bgcolor="rgba(0,0,0,0)",
@@ -199,20 +184,9 @@ CHART_DEFAULTS = dict(
     margin=dict(l=0, r=0, t=30, b=0),
 )
 
-def apply_defaults(fig: go.Figure, title: str = "", height: int = 320) -> go.Figure:
-    fig.update_layout(
-        **CHART_DEFAULTS,
-        title=dict(text=title, font=dict(size=13, color="#94a3b8")),
-        height=height,
-        xaxis=dict(gridcolor="rgba(255,255,255,0.04)", linecolor="rgba(255,255,255,0.04)", zerolinecolor="rgba(0,0,0,0)"),
-        yaxis=dict(gridcolor="rgba(255,255,255,0.04)", linecolor="rgba(255,255,255,0.04)", zerolinecolor="rgba(0,0,0,0)"),
-        legend=dict(bgcolor="rgba(0,0,0,0)", font=dict(color="#94a3b8")),
-    )
-    return fig
-
-# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ---------------------------------------------------------------------------
 # Load model & data (cached)
-# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ---------------------------------------------------------------------------
 @st.cache_resource
 def load_model():
     return joblib.load("model.pkl"), joblib.load("columns.pkl")
@@ -241,16 +215,17 @@ except Exception as e:
     st.error(f"Error loading model artefacts: {e}")
     st.stop()
 
-# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-# Sidebar â€” branding + quick stats
-# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ---------------------------------------------------------------------------
+# Sidebar
+# ---------------------------------------------------------------------------
 with st.sidebar:
     st.markdown("""
     <div style='text-align:center; padding: 24px 0 16px 0;'>
         <div style='display:inline-flex; align-items:center; justify-content:center;
                     width:52px; height:52px; background:linear-gradient(135deg,#6366f1,#8b5cf6);
-                    border-radius:14px; font-size:26px; margin-bottom:12px; box-shadow:0 4px 20px rgba(99,102,241,0.4);'>
-            ðŸ§ 
+                    border-radius:14px; font-size:26px; margin-bottom:12px;
+                    box-shadow:0 4px 20px rgba(99,102,241,0.4);'>
+            &#129504;
         </div>
         <h2 style='margin:0; color:#f1f5f9; font-size:22px; font-weight:800; letter-spacing:-0.5px;'>ChurnIQ</h2>
         <p style='margin:4px 0 0 0; color:#6366f1; font-size:10px; font-weight:700;
@@ -283,48 +258,42 @@ with st.sidebar:
     <div style='background:rgba(99,102,241,0.1); border:1px solid rgba(99,102,241,0.2);
                 border-radius:10px; padding:12px; text-align:center;'>
         <div style='display:flex; align-items:center; justify-content:center; gap:6px;'>
-            <div style='width:7px; height:7px; background:#10b981; border-radius:50%;
-                        animation:pulse 2s infinite;'></div>
+            <div style='width:7px; height:7px; background:#10b981; border-radius:50%;'></div>
             <span style='color:#818cf8; font-size:11px; font-weight:600;'>Model Active</span>
         </div>
-        <p style='margin:4px 0 0 0; color:#475569; font-size:10px;'>Random Forest Â· scikit-learn</p>
+        <p style='margin:4px 0 0 0; color:#475569; font-size:10px;'>Random Forest &middot; scikit-learn</p>
     </div>
     """, unsafe_allow_html=True)
 
-# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ---------------------------------------------------------------------------
 # Hero header
-# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ---------------------------------------------------------------------------
 st.markdown("""
 <div style='background:linear-gradient(135deg, rgba(99,102,241,0.08), rgba(139,92,246,0.05));
-            border:1px solid rgba(99,102,241,0.15); border-radius:20px; padding:28px 32px; margin-bottom:8px;
-            box-shadow: 0 0 80px rgba(99,102,241,0.06);'>
-    <div style='display:flex; align-items:center; gap:16px;'>
-        <div>
-            <h1 style='margin:0; color:#f1f5f9; font-size:26px; font-weight:800;
-                       background:linear-gradient(135deg,#818cf8,#a78bfa); -webkit-background-clip:text;
-                       -webkit-text-fill-color:transparent;'>
-                Telco Customer Churn Intelligence
-            </h1>
-            <p style='margin:6px 0 0 0; color:#64748b; font-size:13px;'>
-                AI-powered analytics platform â€” predict churn risk, explore patterns, and protect revenue
-            </p>
-        </div>
-    </div>
+            border:1px solid rgba(99,102,241,0.15); border-radius:20px; padding:28px 32px;
+            margin-bottom:8px; box-shadow: 0 0 80px rgba(99,102,241,0.06);'>
+    <h1 style='margin:0; color:#f1f5f9; font-size:26px; font-weight:800;
+               background:linear-gradient(135deg,#818cf8,#a78bfa); -webkit-background-clip:text;
+               -webkit-text-fill-color:transparent;'>
+        Telco Customer Churn Intelligence
+    </h1>
+    <p style='margin:6px 0 0 0; color:#64748b; font-size:13px;'>
+        AI-powered analytics platform &mdash; predict churn risk, explore patterns, and protect revenue
+    </p>
 </div>
 """, unsafe_allow_html=True)
 
-# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ---------------------------------------------------------------------------
 # Tabs
-# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ---------------------------------------------------------------------------
 tab_dash, tab_predict, tab_analytics, tab_model = st.tabs([
-    "ðŸ“Š  Dashboard", "ðŸ§   AI Predictor", "ðŸ”  Analytics", "âš™ï¸  Model Intel"
+    "Dashboard", "AI Predictor", "Analytics", "Model Intel"
 ])
 
-# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-# TAB 1 â€” DASHBOARD
-# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+# ===========================================================================
+# TAB 1 - DASHBOARD
+# ===========================================================================
 with tab_dash:
-    # KPI row
     k1, k2, k3, k4 = st.columns(4)
     with k1:
         st.metric("Total Customers", f"{total:,}", delta=f"{total - churned:,} retained")
@@ -338,7 +307,6 @@ with tab_dash:
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # Row 1 â€” Contract + Tenure charts
     col1, col2 = st.columns(2)
 
     with col1:
@@ -349,20 +317,15 @@ with tab_dash:
         fig = go.Figure()
         for i, row in g.iterrows():
             fig.add_trace(go.Bar(
-                x=[row["Contract"]],
-                y=[row["churn_rate"]],
+                x=[row["Contract"]], y=[row["churn_rate"]],
                 name=row["Contract"],
-                marker_color=colors[i],
-                marker_opacity=0.85,
+                marker_color=colors[i], marker_opacity=0.85,
                 text=f"{row['churn_rate']:.1f}%",
                 textposition="outside",
                 textfont=dict(color="#f1f5f9", size=12),
             ))
         fig.update_layout(
-            **CHART_DEFAULTS,
-            height=300,
-            showlegend=False,
-            bargap=0.35,
+            **CHART_DEFAULTS, height=300, showlegend=False, bargap=0.35,
             yaxis=dict(ticksuffix="%", gridcolor="rgba(255,255,255,0.04)"),
             xaxis=dict(gridcolor="rgba(0,0,0,0)"),
         )
@@ -376,26 +339,22 @@ with tab_dash:
         g2 = df_t.groupby("cohort", observed=True)["ChurnBinary"].mean().reset_index()
         g2["churn_rate"] = g2["ChurnBinary"] * 100
         g2["cohort"] = g2["cohort"].astype(str)
-
         fig2 = go.Figure()
         fig2.add_trace(go.Scatter(
             x=g2["cohort"], y=g2["churn_rate"],
             mode="lines+markers",
             line=dict(color="#6366f1", width=2.5),
             marker=dict(size=8, color="#818cf8", line=dict(color="#1e1b4b", width=2)),
-            fill="tozeroy",
-            fillcolor="rgba(99,102,241,0.12)",
+            fill="tozeroy", fillcolor="rgba(99,102,241,0.12)",
             hovertemplate="<b>%{x}</b><br>Churn: %{y:.1f}%<extra></extra>",
         ))
         fig2.update_layout(
-            **CHART_DEFAULTS,
-            height=300,
+            **CHART_DEFAULTS, height=300,
             yaxis=dict(ticksuffix="%", gridcolor="rgba(255,255,255,0.04)"),
             xaxis=dict(gridcolor="rgba(0,0,0,0)"),
         )
         st.plotly_chart(fig2, use_container_width=True, config={"displayModeBar": False})
 
-    # Row 2 â€” Feature importance + Segments
     col3, col4 = st.columns(2)
 
     with col3:
@@ -403,25 +362,18 @@ with tab_dash:
         fi_df = pd.DataFrame({"feature": list(columns), "importance": model.feature_importances_})
         fi_df = fi_df.sort_values("importance", ascending=True).tail(10)
         fi_df["feature"] = fi_df["feature"].str.replace("_", " ").str.title()
-
-        palette = px.colors.sequential.Purpor_r[:10]
         fig3 = go.Figure(go.Bar(
-            x=fi_df["importance"],
-            y=fi_df["feature"],
+            x=fi_df["importance"], y=fi_df["feature"],
             orientation="h",
-            marker=dict(
-                color=fi_df["importance"],
-                colorscale=[[0, "#4f46e5"], [1, "#a78bfa"]],
-                opacity=0.85,
-            ),
+            marker=dict(color=fi_df["importance"],
+                        colorscale=[[0, "#4f46e5"], [1, "#a78bfa"]], opacity=0.85),
             text=[f"{v:.3f}" for v in fi_df["importance"]],
             textposition="outside",
             textfont=dict(color="#94a3b8", size=10),
             hovertemplate="<b>%{y}</b><br>Importance: %{x:.4f}<extra></extra>",
         ))
         fig3.update_layout(
-            **CHART_DEFAULTS,
-            height=350,
+            **CHART_DEFAULTS, height=350,
             xaxis=dict(showticklabels=False, gridcolor="rgba(0,0,0,0)"),
             yaxis=dict(tickfont=dict(size=11, color="#94a3b8"), gridcolor="rgba(0,0,0,0)"),
         )
@@ -431,13 +383,11 @@ with tab_dash:
         st.markdown("<p class='section-label'>Churn by Internet Service</p>", unsafe_allow_html=True)
         gs = df.groupby("InternetService")["ChurnBinary"].agg(["mean", "count"]).reset_index()
         gs["churn_rate"] = gs["mean"] * 100
-
         fig4 = go.Figure()
         svc_colors = {"DSL": "#6366f1", "Fiber optic": "#f43f5e", "No": "#10b981"}
         for _, row in gs.iterrows():
             fig4.add_trace(go.Bar(
-                x=[row["InternetService"]],
-                y=[row["churn_rate"]],
+                x=[row["InternetService"]], y=[row["churn_rate"]],
                 name=row["InternetService"],
                 marker_color=svc_colors.get(row["InternetService"], "#6366f1"),
                 marker_opacity=0.85,
@@ -446,25 +396,21 @@ with tab_dash:
                 textfont=dict(color="#f1f5f9", size=12),
             ))
         fig4.update_layout(
-            **CHART_DEFAULTS,
-            height=350,
-            showlegend=True,
-            bargap=0.4,
+            **CHART_DEFAULTS, height=350, showlegend=True, bargap=0.4,
             yaxis=dict(ticksuffix="%", gridcolor="rgba(255,255,255,0.04)"),
             xaxis=dict(gridcolor="rgba(0,0,0,0)"),
         )
         st.plotly_chart(fig4, use_container_width=True, config={"displayModeBar": False})
 
-    # Insight callout
     st.markdown("""
     <div class='info-card'>
         <div style='display:flex; gap:10px; align-items:flex-start;'>
-            <span style='font-size:18px;'>ðŸ’¡</span>
+            <span style='font-size:18px;'>&#128161;</span>
             <div>
                 <p style='margin:0 0 4px 0; color:#818cf8; font-weight:600; font-size:13px;'>Key Insight</p>
                 <p style='margin:0; color:#94a3b8; font-size:13px; line-height:1.6;'>
                     Month-to-month contract customers churn at <strong style='color:#f43f5e;'>42.7%</strong>
-                    â€” over 15Ã— higher than two-year contract holders (2.8%).
+                    &mdash; over 15&times; higher than two-year contract holders (2.8%).
                     Fiber optic internet users show <strong style='color:#f59e0b;'>41.9% churn</strong>,
                     suggesting a service satisfaction issue.
                     Proactive contract upgrades could protect
@@ -475,16 +421,16 @@ with tab_dash:
     </div>
     """, unsafe_allow_html=True)
 
-# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-# TAB 2 â€” AI PREDICTOR
-# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+# ===========================================================================
+# TAB 2 - AI PREDICTOR
+# ===========================================================================
 with tab_predict:
     form_col, result_col = st.columns([1, 1], gap="large")
 
     with form_col:
         st.markdown("<p class='section-label'>Customer Profile</p>", unsafe_allow_html=True)
 
-        with st.expander("ðŸ‘¤  Demographics", expanded=True):
+        with st.expander("Demographics", expanded=True):
             c1, c2 = st.columns(2)
             with c1:
                 gender = st.selectbox("Gender", ["Male", "Female"])
@@ -493,7 +439,7 @@ with tab_predict:
                 Partner = st.selectbox("Partner", ["No", "Yes"])
                 Dependents = st.selectbox("Dependents", ["No", "Yes"])
 
-        with st.expander("ðŸ“‹  Account & Billing", expanded=True):
+        with st.expander("Account & Billing", expanded=True):
             tenure = st.slider("Tenure (months)", 0, 72, 12)
             c3, c4 = st.columns(2)
             with c3:
@@ -510,7 +456,7 @@ with tab_predict:
                     ["Electronic check", "Mailed check",
                      "Bank transfer (automatic)", "Credit card (automatic)"])
 
-        with st.expander("ðŸ“¡  Services", expanded=True):
+        with st.expander("Services", expanded=True):
             c7, c8 = st.columns(2)
             with c7:
                 PhoneService = st.selectbox("Phone Service", ["No", "Yes"])
@@ -524,9 +470,8 @@ with tab_predict:
                 StreamingTV = st.selectbox("Streaming TV", ["No internet service", "No", "Yes"])
                 StreamingMovies = st.selectbox("Streaming Movies", ["No internet service", "No", "Yes"])
 
-        predict_btn = st.button("ðŸ§   Run AI Prediction", use_container_width=True)
+        predict_btn = st.button("Run AI Prediction", use_container_width=True)
 
-    # â”€â”€ Result panel â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     with result_col:
         st.markdown("<p class='section-label'>Prediction Result</p>", unsafe_allow_html=True)
 
@@ -550,45 +495,38 @@ with tab_predict:
             proba = model.predict_proba(inp_enc)[0]
             churn_prob = proba[1] * 100
 
-            # Risk level
             if churn_prob >= 75:
-                risk, risk_class, risk_icon = "Critical", "risk-critical", "ðŸ”´"
+                risk, risk_class = "Critical", "risk-critical"
             elif churn_prob >= 50:
-                risk, risk_class, risk_icon = "High", "risk-high", "ðŸŸ "
+                risk, risk_class = "High", "risk-high"
             elif churn_prob >= 25:
-                risk, risk_class, risk_icon = "Medium", "risk-medium", "ðŸŸ¡"
+                risk, risk_class = "Medium", "risk-medium"
             else:
-                risk, risk_class, risk_icon = "Low", "risk-low", "ðŸŸ¢"
+                risk, risk_class = "Low", "risk-low"
 
             avg_remaining = max(0, 24 - tenure)
             revenue_at_risk = MonthlyCharges * avg_remaining * (churn_prob / 100)
 
-            # Verdict card
             if pred == 1:
                 verdict_html = f"""
                 <div class='{risk_class}' style='text-align:center; margin-bottom:16px;'>
-                    <p style='font-size:32px; margin:0;'>âš ï¸</p>
-                    <p style='font-size:18px; font-weight:700; color:#fda4af; margin:4px 0;'>
-                        Likely to Churn
-                    </p>
+                    <p style='font-size:32px; margin:0;'>&#9888;&#65039;</p>
+                    <p style='font-size:18px; font-weight:700; color:#fda4af; margin:4px 0;'>Likely to Churn</p>
                     <p style='color:#f87171; font-size:13px; margin:0;'>
-                        {risk} Risk Â· {churn_prob:.1f}% probability
+                        {risk} Risk &middot; {churn_prob:.1f}% probability
                     </p>
                 </div>"""
             else:
                 verdict_html = f"""
                 <div class='{risk_class}' style='text-align:center; margin-bottom:16px;'>
-                    <p style='font-size:32px; margin:0;'>âœ…</p>
-                    <p style='font-size:18px; font-weight:700; color:#6ee7b7; margin:4px 0;'>
-                        Likely to Stay
-                    </p>
+                    <p style='font-size:32px; margin:0;'>&#9989;</p>
+                    <p style='font-size:18px; font-weight:700; color:#6ee7b7; margin:4px 0;'>Likely to Stay</p>
                     <p style='color:#34d399; font-size:13px; margin:0;'>
-                        {risk} Risk Â· {churn_prob:.1f}% churn probability
+                        {risk} Risk &middot; {churn_prob:.1f}% churn probability
                     </p>
                 </div>"""
             st.markdown(verdict_html, unsafe_allow_html=True)
 
-            # Gauge chart
             gauge_color = "#f43f5e" if churn_prob > 50 else "#10b981"
             fig_gauge = go.Figure(go.Indicator(
                 mode="gauge+number",
@@ -601,10 +539,10 @@ with tab_predict:
                     "bgcolor": "rgba(0,0,0,0)",
                     "borderwidth": 0,
                     "steps": [
-                        {"range": [0, 25],  "color": "rgba(16,185,129,0.12)"},
-                        {"range": [25, 50], "color": "rgba(245,158,11,0.12)"},
-                        {"range": [50, 75], "color": "rgba(249,115,22,0.12)"},
-                        {"range": [75, 100],"color": "rgba(244,63,94,0.15)"},
+                        {"range": [0, 25],   "color": "rgba(16,185,129,0.12)"},
+                        {"range": [25, 50],  "color": "rgba(245,158,11,0.12)"},
+                        {"range": [50, 75],  "color": "rgba(249,115,22,0.12)"},
+                        {"range": [75, 100], "color": "rgba(244,63,94,0.15)"},
                     ],
                     "threshold": {
                         "line": {"color": gauge_color, "width": 3},
@@ -622,7 +560,6 @@ with tab_predict:
             )
             st.plotly_chart(fig_gauge, use_container_width=True, config={"displayModeBar": False})
 
-            # Probability bars
             p1, p2 = st.columns(2)
             with p1:
                 st.markdown(f"""
@@ -631,8 +568,7 @@ with tab_predict:
                     <p style='margin:0; color:#f87171; font-size:11px; font-weight:600;
                               text-transform:uppercase; letter-spacing:1px;'>Churn</p>
                     <p style='margin:4px 0 0 0; color:#fda4af; font-size:24px; font-weight:700;'>
-                        {churn_prob:.1f}%
-                    </p>
+                        {churn_prob:.1f}%</p>
                 </div>""", unsafe_allow_html=True)
             with p2:
                 st.markdown(f"""
@@ -641,24 +577,18 @@ with tab_predict:
                     <p style='margin:0; color:#34d399; font-size:11px; font-weight:600;
                               text-transform:uppercase; letter-spacing:1px;'>Stay</p>
                     <p style='margin:4px 0 0 0; color:#6ee7b7; font-size:24px; font-weight:700;'>
-                        {100-churn_prob:.1f}%
-                    </p>
+                        {100-churn_prob:.1f}%</p>
                 </div>""", unsafe_allow_html=True)
 
             st.markdown("<br>", unsafe_allow_html=True)
-
-            # Revenue at risk
             st.markdown(f"""
             <div style='background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.25);
                         border-radius:10px; padding:14px; display:flex; justify-content:space-between;
                         align-items:center; margin-bottom:12px;'>
-                <span style='color:#94a3b8; font-size:13px;'>ðŸ’° Revenue at Risk</span>
-                <span style='color:#fbbf24; font-size:16px; font-weight:700;'>
-                    ${revenue_at_risk:,.0f}
-                </span>
+                <span style='color:#94a3b8; font-size:13px;'>Revenue at Risk</span>
+                <span style='color:#fbbf24; font-size:16px; font-weight:700;'>${revenue_at_risk:,.0f}</span>
             </div>""", unsafe_allow_html=True)
 
-            # Recommendation
             if churn_prob >= 70:
                 if Contract == "Month-to-month":
                     rec = "Offer annual contract at 15% discount to lock in retention."
@@ -669,12 +599,12 @@ with tab_predict:
             elif churn_prob >= 40:
                 rec = "Schedule proactive check-in and review service satisfaction score."
             else:
-                rec = "Customer appears stable â€” maintain quarterly engagement touchpoints."
+                rec = "Customer appears stable - maintain quarterly engagement touchpoints."
 
             st.markdown(f"""
             <div class='info-card'>
                 <p style='margin:0 0 4px 0; color:#818cf8; font-weight:600; font-size:12px;
-                          text-transform:uppercase; letter-spacing:1px;'>ðŸ’¡ AI Recommendation</p>
+                          text-transform:uppercase; letter-spacing:1px;'>AI Recommendation</p>
                 <p style='margin:0; color:#94a3b8; font-size:13px; line-height:1.6;'>{rec}</p>
             </div>""", unsafe_allow_html=True)
 
@@ -683,7 +613,7 @@ with tab_predict:
             <div style='display:flex; flex-direction:column; align-items:center; justify-content:center;
                         height:420px; background:rgba(15,23,42,0.5); border:1px solid rgba(255,255,255,0.06);
                         border-radius:16px; text-align:center; padding:32px;'>
-                <div style='font-size:52px; margin-bottom:16px;'>ðŸ§ </div>
+                <div style='font-size:52px; margin-bottom:16px;'>&#129504;</div>
                 <h3 style='color:#f1f5f9; margin:0 0 8px 0; font-size:18px;'>Ready to Analyse</h3>
                 <p style='color:#475569; font-size:13px; line-height:1.6; max-width:280px;'>
                     Configure the customer profile on the left, then click
@@ -692,9 +622,9 @@ with tab_predict:
                 </p>
             </div>""", unsafe_allow_html=True)
 
-# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-# TAB 3 â€” ANALYTICS
-# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+# ===========================================================================
+# TAB 3 - ANALYTICS
+# ===========================================================================
 with tab_analytics:
     sub1, sub2, sub3 = st.tabs(["Payment & Service", "Charge Distribution", "Segment Overview"])
 
@@ -727,7 +657,6 @@ with tab_analytics:
             df_sc["label"] = df_sc["SeniorCitizen"].map({0: "Non-Senior", 1: "Senior"})
             gsc = df_sc.groupby("label")["ChurnBinary"].agg(["mean","count"]).reset_index()
             gsc["churn_rate"] = gsc["mean"] * 100
-
             fig_sc = go.Figure(go.Bar(
                 x=gsc["label"], y=gsc["churn_rate"],
                 marker_color=["#6366f1","#f43f5e"], marker_opacity=0.85,
@@ -747,15 +676,14 @@ with tab_analytics:
         bins = list(range(0, 130, 10))
         ch_hist, _ = np.histogram(churned_charges, bins=bins)
         re_hist, _ = np.histogram(retained_charges, bins=bins)
-        labels = [f"${b}-{b+10}" for b in bins[:-1]]
-
+        dist_labels = [f"${b}-{b+10}" for b in bins[:-1]]
         fig_dist = go.Figure()
         fig_dist.add_trace(go.Bar(
-            x=labels, y=re_hist.tolist(), name="Retained",
+            x=dist_labels, y=re_hist.tolist(), name="Retained",
             marker_color="#10b981", marker_opacity=0.75,
         ))
         fig_dist.add_trace(go.Bar(
-            x=labels, y=ch_hist.tolist(), name="Churned",
+            x=dist_labels, y=ch_hist.tolist(), name="Churned",
             marker_color="#f43f5e", marker_opacity=0.8,
         ))
         fig_dist.update_layout(
@@ -791,31 +719,27 @@ with tab_analytics:
                     "Avg Tenure (mo)": round(seg["tenure"].mean(), 1),
                     "Churn Rate": f"{seg['ChurnBinary'].mean()*100:.1f}%",
                 })
-
         cols_seg = st.columns(len(seg_rows))
         for i, (row, color) in enumerate(zip(seg_rows, seg_colors)):
             with cols_seg[i]:
+                cr_val = float(row["Churn Rate"].rstrip("%"))
+                cr_color = "#f43f5e" if cr_val > 40 else "#f59e0b" if cr_val > 20 else "#10b981"
                 st.markdown(f"""
                 <div style='background:rgba(15,23,42,0.7); border:1px solid rgba(255,255,255,0.07);
                             border-radius:12px; padding:16px; text-align:center;'>
                     <div style='width:10px; height:10px; background:{color}; border-radius:50%;
                                 display:inline-block; margin-bottom:8px;'></div>
                     <p style='margin:0; color:#f1f5f9; font-weight:600; font-size:12px;'>{row["Segment"]}</p>
-                    <p style='margin:4px 0; color:{color}; font-size:22px; font-weight:700;'>
-                        {row["Count"]:,}
-                    </p>
+                    <p style='margin:4px 0; color:{color}; font-size:22px; font-weight:700;'>{row["Count"]:,}</p>
                     <p style='margin:0; color:#475569; font-size:11px;'>
-                        ${row["Avg Monthly ($)"]}/mo Â· {row["Avg Tenure (mo)"]}mo
-                    </p>
-                    <p style='margin:4px 0 0 0; font-size:12px; font-weight:600;
-                              color:{"#f43f5e" if float(row["Churn Rate"].rstrip("%")) > 40 else "#f59e0b" if float(row["Churn Rate"].rstrip("%")) > 20 else "#10b981"};'>
-                        {row["Churn Rate"]} churn
-                    </p>
+                        ${row["Avg Monthly ($)"]}/mo &middot; {row["Avg Tenure (mo)"]}mo</p>
+                    <p style='margin:4px 0 0 0; font-size:12px; font-weight:600; color:{cr_color};'>
+                        {row["Churn Rate"]} churn</p>
                 </div>""", unsafe_allow_html=True)
 
-# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-# TAB 4 â€” MODEL INTEL
-# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+# ===========================================================================
+# TAB 4 - MODEL INTEL
+# ===========================================================================
 with tab_model:
     report = classification_report(y_true, y_pred_all, output_dict=True)
     cm = confusion_matrix(y_true, y_pred_all)
@@ -826,7 +750,6 @@ with tab_model:
     rec = report["1"]["recall"] * 100
     f1 = report["1"]["f1-score"] * 100
 
-    # Metric cards
     m1, m2, m3, m4, m5 = st.columns(5)
     with m1: st.metric("Accuracy",  f"{acc:.2f}%",  "Overall")
     with m2: st.metric("Precision", f"{prec:.2f}%", "Churn class")
@@ -840,14 +763,13 @@ with tab_model:
 
     with cm_col:
         st.markdown("<p class='section-label'>Confusion Matrix</p>", unsafe_allow_html=True)
-        labels = [["True Negative", "False Positive"], ["False Negative", "True Positive"]]
-        text_matrix = [[f"<b>{cm[i][j]:,}</b><br>{labels[i][j]}" for j in range(2)] for i in range(2)]
+        cm_labels = [["True Negative", "False Positive"], ["False Negative", "True Positive"]]
+        text_matrix = [[f"<b>{cm[i][j]:,}</b><br>{cm_labels[i][j]}" for j in range(2)] for i in range(2)]
         fig_cm = go.Figure(go.Heatmap(
             z=[[cm[0][0], cm[0][1]], [cm[1][0], cm[1][1]]],
             text=text_matrix, texttemplate="%{text}",
             colorscale=[[0, "#0f172a"], [0.5, "#312e81"], [1, "#6366f1"]],
-            showscale=False, hoverongaps=False,
-            xgap=3, ygap=3,
+            showscale=False, hoverongaps=False, xgap=3, ygap=3,
         ))
         fig_cm.update_layout(
             **CHART_DEFAULTS, height=320,
@@ -860,7 +782,6 @@ with tab_model:
 
     with roc_col:
         st.markdown("<p class='section-label'>ROC Curve</p>", unsafe_allow_html=True)
-        # Downsample for plot
         idx = np.linspace(0, len(fpr)-1, 80).astype(int)
         fig_roc = go.Figure()
         fig_roc.add_trace(go.Scatter(
@@ -877,27 +798,23 @@ with tab_model:
         fig_roc.update_layout(
             **CHART_DEFAULTS, height=320,
             xaxis=dict(title="False Positive Rate", gridcolor="rgba(255,255,255,0.04)",
-                       title_font=dict(size=11), tickfont=dict(size=10)),
+                       tickfont=dict(size=10)),
             yaxis=dict(title="True Positive Rate", gridcolor="rgba(255,255,255,0.04)",
-                       title_font=dict(size=11), tickfont=dict(size=10)),
+                       tickfont=dict(size=10)),
             legend=dict(font=dict(size=11)),
         )
         st.plotly_chart(fig_roc, use_container_width=True, config={"displayModeBar": False})
 
-    # Full feature importance
+    # Full feature importance - margin applied separately to avoid duplicate kwarg crash
     st.markdown("<p class='section-label'>Complete Feature Importance</p>", unsafe_allow_html=True)
     fi_full = pd.DataFrame({"Feature": list(columns), "Importance": model.feature_importances_})
     fi_full = fi_full.sort_values("Importance", ascending=True)
     fi_full["Feature"] = fi_full["Feature"].str.replace("_", " ").str.title()
-
     fig_fi = go.Figure(go.Bar(
         x=fi_full["Importance"], y=fi_full["Feature"],
         orientation="h",
-        marker=dict(
-            color=fi_full["Importance"],
-            colorscale=[[0, "#1e1b4b"], [1, "#818cf8"]],
-            opacity=0.85,
-        ),
+        marker=dict(color=fi_full["Importance"],
+                    colorscale=[[0, "#1e1b4b"], [1, "#818cf8"]], opacity=0.85),
         hovertemplate="<b>%{y}</b><br>Importance: %{x:.4f}<extra></extra>",
     ))
     fig_fi.update_layout(
@@ -905,12 +822,11 @@ with tab_model:
         height=700,
         xaxis=dict(showticklabels=False, gridcolor="rgba(0,0,0,0)"),
         yaxis=dict(tickfont=dict(size=10), gridcolor="rgba(0,0,0,0)"),
-        margin=dict(l=0, r=40, t=10, b=10),
     )
+    fig_fi.update_layout(margin=dict(l=0, r=40, t=10, b=10))
     st.plotly_chart(fig_fi, use_container_width=True, config={"displayModeBar": False})
 
-    # Architecture info
-    with st.expander("âš™ï¸  Model Architecture Details"):
+    with st.expander("Model Architecture Details"):
         arch_data = {
             "Algorithm": "Random Forest Classifier",
             "Framework": "scikit-learn",
@@ -923,7 +839,7 @@ with tab_model:
         }
         a1, a2 = st.columns(2)
         items = list(arch_data.items())
-        for i, (k, v) in enumerate(items[:4]):
+        for k, v in items[:4]:
             a1.markdown(f"**{k}:** `{v}`")
-        for i, (k, v) in enumerate(items[4:]):
+        for k, v in items[4:]:
             a2.markdown(f"**{k}:** `{v}`")
