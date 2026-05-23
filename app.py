@@ -236,7 +236,7 @@ def compute_eval(_model, columns, df):
 try:
     model, columns = load_model()
     df = load_data()
-    y_true, y_pred_all, y_proba_all = compute_eval(model, columns, df)
+    y_true, y_pred_all, y_proba_all = compute_eval(model, list(columns), df)
 except Exception as e:
     st.error(f"Error loading model artefacts: {e}")
     st.stop()
